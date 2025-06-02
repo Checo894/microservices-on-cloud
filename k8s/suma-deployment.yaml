@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: suma
+spec:
+  ports:
+    - port: 8000
+  selector:
+    app: suma
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: suma
+spec:
+  selector:
+    matchLabels:
+      app: suma
+  template:
+    metadata:
+      labels:
+        app: suma
+    spec:
+      containers:
+        - name: suma
+          image: suma:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
