@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  suma:
+    build: ./suma
+    ports:
+    - "8001:8000"
+    networks:
+    - shape-net
+
+  resta:
+    build: ./resta
+    ports:
+    - "8002:8000"
+    networks:
+    - shape-net
+
+  ecuacion:
+    build: ./ecuacion
+    ports:
+    - "8003:8000"
+    networks:
+    - shape-net
+    depends_on:
+    - suma
+    - resta
+    - mysql
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: qwer1234
+      MYSQL_DATABASE: microservicios_db
+    # ports:
+    #   - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - shape-net
+
+networks:
+  shape-net:
+    driver: bridge
+
+volumes:
+  mysql_data:
